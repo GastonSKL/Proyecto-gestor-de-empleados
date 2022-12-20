@@ -5,6 +5,18 @@
     <artifactId>beClever</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>MariaDB</groupId>
+            <artifactId>MariaDB</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jcalendar</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>18</maven.compiler.source>

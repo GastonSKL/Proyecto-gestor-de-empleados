@@ -7,6 +7,7 @@ public class Employee {
     
     private int idEmployee;
     private String name;
+    private String lastName;
     private LocalDate date;
     private boolean registerType;
     private String businessLocation;
@@ -14,16 +15,18 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name,LocalDate date, boolean registerType, String businessLocation) {
+    public Employee(String name,String lastName, LocalDate date, boolean registerType, String businessLocation) {
         this.name = name;
+        this.lastName = lastName;
         this.date = date;
         this.registerType = registerType;
         this.businessLocation = businessLocation;
     }
 
-    public Employee(int idEmployee,String name, LocalDate date, boolean registerType, String businessLocation) {
+    public Employee(int idEmployee,String name,String lastName, LocalDate date, boolean registerType, String businessLocation) {
         this.idEmployee = idEmployee;
         this.name = name;
+        this.lastName = lastName;
         this.date = date;
         this.registerType = registerType;
         this.businessLocation = businessLocation;
@@ -68,6 +71,15 @@ public class Employee {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
 
     @Override
     public int hashCode() {
