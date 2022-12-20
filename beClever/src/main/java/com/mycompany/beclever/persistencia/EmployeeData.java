@@ -8,7 +8,9 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class EmployeeData {
 
@@ -110,5 +112,128 @@ public class EmployeeData {
         }
         return empleado;
     }
+    
+    public HashSet<Employee> buscarEmpleadoFecha(LocalDate fecha) {
+
+        HashSet<Employee> empleados = new HashSet();
+
+        String sql = "SELECT idEmployee FROM `employee` WHERE date = ?";
+
+        try {
+            PreparedStatement ps = conexionData.prepareStatement(sql);
+            
+            ps.setDate(1, Date.valueOf(fecha)); 
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Employee empleado = buscarEmpleadoId(rs.getInt("idEmployee"));
+                
+                empleados.add(empleado);
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Se produjo un error al obtener la lista de empleados por fecha "+ex);
+        }
+        return empleados;
+    }
+    
+    public HashSet<Employee> buscarEmpleadoEntreFechas(LocalDate fechaInicio, LocalDate fechaFinal, boolean estado) {
+
+        HashSet<Employee> empleados = new HashSet();
+
+        String sql = "SELECT * FROM `employee` WHERE date >= ? AND date <= ? AND registerType = ?";
+
+        try {
+            PreparedStatement ps = conexionData.prepareStatement(sql);
+            
+            ps.setDate(1, Date.valueOf(fechaInicio)); 
+            ps.setDate(2, Date.valueOf(fechaFinal)); 
+            ps.setBoolean(3, estado);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Employee empleado = buscarEmpleadoId(rs.getInt("idEmployee"));
+                
+                empleados.add(empleado);
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Se produjo un error al obtener la lista de empleados entre fechas "+ex);
+        }
+        return empleados;
+    }
+    
+    public void actualizarCliente(Employee empleado) {
+        String sqlQuery = "UPDATE employee SET name= ?, lastName= ?, date= ?, businessLocation= ? WHERE idEmployee  = ?";
+        if (buscarEmpleadoId(empleado.getIdEmployee()) != null) {
+            try {
+                PreparedStatement ps = conexionData.prepareStatement(sqlQuery);
+                ps.setString(1, empleado.getName());
+                ps.setString(2, empleado.getLastName());
+                ps.setDate(3, Date.valueOf(empleado.getDate()));
+                ps.setString(4, empleado.getBusinessLocation());
+                ps.setInt(5, empleado.getIdEmployee());
+
+                if (ps.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(null, "Empleado actualizado");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar empleado");
+                }
+
+                ps.close();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Un error a ocurrido");
+            }
+        }
+
+    }
+    
+    public ArrayList<Employee> listarEmpleados(boolean estado) {
+
+        ArrayList<Employee> empleados = new ArrayList();
+
+        String sql = "SELECT * FROM employee WHERE registerType = ?";
+
+        try {
+            PreparedStatement ps = conexionData.prepareStatement(sql);
+
+            ps.setBoolean(1, estado); //Si el estado es true me devuelve los empleados activos, y false los que fueron dados de baja
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Employee empleado = new Employee();
+
+                empleado.setIdEmployee(rs.getInt("idEmployee"));
+                empleado.setName(rs.getString("name"));
+                empleado.setLastName(rs.getString("lastName"));
+                empleado.setDate(rs.getDate("date").toLocalDate());
+                empleado.setRegisterType(estado);
+                empleado.setBusinessLocation(rs.getString("businessLocation"));
+                
+
+                empleados.add(empleado);
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Se produjo un error");
+        }
+        return empleados;
+    }
+    
+    
+    
 
 }
