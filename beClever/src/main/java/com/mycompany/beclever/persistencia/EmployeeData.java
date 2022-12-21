@@ -171,7 +171,7 @@ public class EmployeeData {
         return empleados;
     }
     
-    public void actualizarCliente(Employee empleado) {
+    public void actualizarEmpleado(Employee empleado) {
         String sqlQuery = "UPDATE employee SET name= ?, lastName= ?, date= ?, businessLocation= ? WHERE idEmployee  = ?";
         if (buscarEmpleadoId(empleado.getIdEmployee()) != null) {
             try {
