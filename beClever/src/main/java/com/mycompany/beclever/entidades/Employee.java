@@ -10,26 +10,29 @@ public class Employee {
     private String lastName;
     private LocalDate date;
     private boolean registerType;
+    private boolean sexo;
     private String businessLocation;
 
     public Employee() {
     }
 
-    public Employee(String name,String lastName, LocalDate date, boolean registerType, String businessLocation) {
+    public Employee(String name,String lastName, LocalDate date, boolean registerType, String businessLocation, boolean sexo) {
         this.name = name;
         this.lastName = lastName;
         this.date = date;
         this.registerType = registerType;
         this.businessLocation = businessLocation;
+        this.sexo = sexo;
     }
 
-    public Employee(int idEmployee,String name,String lastName, LocalDate date, boolean registerType, String businessLocation) {
+    public Employee(int idEmployee,String name,String lastName, LocalDate date, boolean registerType, String businessLocation, boolean sexo) {
         this.idEmployee = idEmployee;
         this.name = name;
         this.lastName = lastName;
         this.date = date;
         this.registerType = registerType;
         this.businessLocation = businessLocation;
+        this.sexo = sexo;
     }
 
     public int getIdEmployee() {
@@ -79,6 +82,16 @@ public class Employee {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public boolean isSexo() {
+        return sexo;
+    }
+
+    public void setSexo(boolean sexo) {
+        this.sexo = sexo;
+    }
+    
+    
     
 
     @Override

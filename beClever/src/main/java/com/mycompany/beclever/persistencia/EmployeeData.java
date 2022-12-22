@@ -21,7 +21,7 @@ public class EmployeeData {
     }
 
     public void registarEmpleado(Employee empleado) {
-        String query = "INSERT INTO employee(name, lastName, date, registerType, businessLocation) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO employee(name, lastName, date, registerType, businessLocation, sexo) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement ps = conexionData.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, empleado.getName());
@@ -29,6 +29,7 @@ public class EmployeeData {
             ps.setDate(3, Date.valueOf(empleado.getDate()));
             ps.setBoolean(4, empleado.isRegisterType());
             ps.setString(5, empleado.getBusinessLocation());
+            ps.setBoolean(6, empleado.isSexo());
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Empleado registrado");
@@ -102,6 +103,7 @@ public class EmployeeData {
                 empleado.setDate(rs.getDate("date").toLocalDate());
                 empleado.setRegisterType(rs.getBoolean("registerType"));
                 empleado.setBusinessLocation(rs.getString("businessLocation"));
+                empleado.setSexo(rs.getBoolean("sexo"));
                
             }
 
@@ -141,18 +143,18 @@ public class EmployeeData {
         return empleados;
     }
     
-    public HashSet<Employee> buscarEmpleadoEntreFechas(LocalDate fechaInicio, LocalDate fechaFinal, boolean estado) {
+    public HashSet<Employee> buscarEmpleadoEntreFechas(LocalDate fechaInicio, LocalDate fechaFinal) {
 
         HashSet<Employee> empleados = new HashSet();
 
-        String sql = "SELECT * FROM `employee` WHERE date >= ? AND date <= ? AND registerType = ?";
+        String sql = "SELECT * FROM `employee` WHERE date >= ? AND date <= ?";
 
         try {
             PreparedStatement ps = conexionData.prepareStatement(sql);
             
             ps.setDate(1, Date.valueOf(fechaInicio)); 
             ps.setDate(2, Date.valueOf(fechaFinal)); 
-            ps.setBoolean(3, estado);
+            
 
             ResultSet rs = ps.executeQuery();
 
@@ -172,7 +174,7 @@ public class EmployeeData {
     }
     
     public void actualizarEmpleado(Employee empleado) {
-        String sqlQuery = "UPDATE employee SET name= ?, lastName= ?, date= ?, businessLocation= ? WHERE idEmployee  = ?";
+        String sqlQuery = "UPDATE employee SET name= ?, lastName= ?, date= ?, businessLocation= ?, sexo = ? WHERE idEmployee  = ?";
         if (buscarEmpleadoId(empleado.getIdEmployee()) != null) {
             try {
                 PreparedStatement ps = conexionData.prepareStatement(sqlQuery);
@@ -180,8 +182,9 @@ public class EmployeeData {
                 ps.setString(2, empleado.getLastName());
                 ps.setDate(3, Date.valueOf(empleado.getDate()));
                 ps.setString(4, empleado.getBusinessLocation());
-                ps.setInt(5, empleado.getIdEmployee());
-
+                ps.setBoolean(5, empleado.isSexo());
+                ps.setInt(6, empleado.getIdEmployee());
+                
                 if (ps.executeUpdate() > 0) {
                     JOptionPane.showMessageDialog(null, "Empleado actualizado");
                 } else {
@@ -220,6 +223,7 @@ public class EmployeeData {
                 empleado.setDate(rs.getDate("date").toLocalDate());
                 empleado.setRegisterType(estado);
                 empleado.setBusinessLocation(rs.getString("businessLocation"));
+                empleado.setSexo(rs.getBoolean("sexo"));
                 
 
                 empleados.add(empleado);
@@ -231,6 +235,84 @@ public class EmployeeData {
             JOptionPane.showMessageDialog(null, "Se produjo un error");
         }
         return empleados;
+    }
+    
+    public double promediarEmpleadosMasculinos(LocalDate fechaInicio, LocalDate fechaFinal, boolean estado) {
+        int contador = 0;
+        double promedio = 0;
+
+        HashSet<Employee> empleados = new HashSet();
+
+        String sql = "SELECT * FROM `employee` WHERE date >= ? AND date <= ? AND registerType = ?";
+
+        try {
+            PreparedStatement ps = conexionData.prepareStatement(sql);
+            
+            ps.setDate(1, Date.valueOf(fechaInicio)); 
+            ps.setDate(2, Date.valueOf(fechaFinal)); 
+            ps.setBoolean(3, estado);
+            
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Employee empleado = buscarEmpleadoId(rs.getInt("idEmployee"));
+                contador++;
+                if(empleado.isSexo()){
+                    promedio++;
+                }
+                empleados.add(empleado);
+            }
+            
+            promedio = promedio / contador;
+            
+            ps.close();
+            
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Se produjo un error al obtener el promedio de masculinos "+ex);
+        }
+        return promedio;
+    }
+    
+    public double promediarEmpleadosFemeninos(LocalDate fechaInicio, LocalDate fechaFinal, boolean estado) {
+        int contador = 0;
+        double promedio = 0;
+
+        HashSet<Employee> empleados = new HashSet();
+
+        String sql = "SELECT * FROM `employee` WHERE date >= ? AND date <= ? AND registerType = ?";
+
+        try {
+            PreparedStatement ps = conexionData.prepareStatement(sql);
+            
+            ps.setDate(1, Date.valueOf(fechaInicio)); 
+            ps.setDate(2, Date.valueOf(fechaFinal)); 
+            ps.setBoolean(3, estado);
+            
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Employee empleado = buscarEmpleadoId(rs.getInt("idEmployee"));
+                contador++;
+                if(!empleado.isSexo()){
+                    promedio++;
+                }
+                empleados.add(empleado);
+            }
+            
+            promedio = promedio / contador;
+            
+            ps.close();
+            
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Se produjo un error al obtener el promedio de femeninos"+ex);
+        }
+        return promedio;
     }
     
     
