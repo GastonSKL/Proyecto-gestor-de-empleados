@@ -1,0 +1,13 @@
+Para poder utilizar programa gestor de empleados...
+
+*Inicializar Apache y MySQL atravez de XAMPP. 
+
+*¡IMPORTANTE! MySQL tiene que estar iniciado en puerto 3306
+
+*Iniciar en netbeans15
+
+*Ejecutar run file en vistaPrincipal, en paquete de vistas de proyecto
+
+*Ya estaria listo para ser utilizado
+
+-Funcionalidades probadas en archivo main titulado BeClever.java

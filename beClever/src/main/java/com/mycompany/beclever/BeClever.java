@@ -54,10 +54,10 @@ public class BeClever {
         System.out.println("Lista de empleados dados de baja :"+eData.listarEmpleados(false));
         //se listan empleados de baja
         
-        System.out.println("Lista de empleados entre 2022-12-18 y 2022-12-22 de alta :" + eData.buscarEmpleadoEntreFechas(LocalDate.of(2022, 12, 18), LocalDate.of(2022, 12, 22), true));
+        System.out.println("Lista de empleados entre 2022-12-18 y 2022-12-22 de alta :" + eData.buscarEmpleadoEntreFechas(LocalDate.of(2022, 12, 18), LocalDate.of(2022, 12, 22)));
         //se listan empleados entre 2022-12-18 y 2022-12-22 de alta
         
-        System.out.println("Lista de empleados entre 2022-12-18 y 2022-12-22 de baja :" + eData.buscarEmpleadoEntreFechas(LocalDate.of(2022, 12, 18), LocalDate.of(2022, 12, 22), false));
+        System.out.println("Lista de empleados entre 2022-12-18 y 2022-12-22 de baja :" + eData.buscarEmpleadoEntreFechas(LocalDate.of(2022, 12, 18), LocalDate.of(2022, 12, 22)));
         //se listan empleados entre 2022-12-18 y 2022-12-22 de baja
     }
         
