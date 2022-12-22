@@ -4,6 +4,8 @@ Para poder utilizar programa gestor de empleados...
 
 *¡IMPORTANTE! MySQL tiene que estar iniciado en puerto 3306
 
+*Importar la base de datos que deje dentro del repositorio, o la que deje dentro del rar con el nombre de beclever a una data base con el mismo nombre.
+
 *Iniciar en netbeans15
 
 *Ejecutar run file en vistaPrincipal, en paquete de vistas de proyecto
